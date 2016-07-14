@@ -1,0 +1,387 @@
+<!DOCTYPE>
+<html>
+	<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>User List</title>
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+        <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+        <!--<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>-->
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
+        <link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/favicon/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/favicon/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/favicon/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/favicon/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/favicon/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon-180x180.png">
+        <link rel="icon" type="image/png" href="/favicon/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="/favicon/android-chrome-192x192.png" sizes="192x192">
+        <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="/favicon/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="/favicon/manifest.json">
+        <meta name="apple-mobile-web-app-title" content="Shatter I.T.">
+        <meta name="application-name" content="Shatter I.T.">
+        <meta name="msapplication-TileColor" content="#2d89ef">
+        <meta name="msapplication-TileImage" content="/favicon/mstile-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+        <script src="/js/bootstrap.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		
+		<style type="text/css">
+			.rows:hover {
+				background-color: #d9d9d9;
+				transition: background-color 500ms;
+				cursor: default;
+			}
+			.opt:hover {
+				text-shadow: 0 0 3px #FF0000;
+				transition: background-color 500ms;
+			}
+			input[type=checkbox] {
+				cursor: pointer;
+				min-width: 17px;
+				min-height: 17px;
+			}
+			table {
+				border-collapse: collapse;
+				width: 100%;
+			}
+			tr {
+				border-bottom: 1px solid lightgrey;
+				background-color: white;
+			}
+			tr.hoverable:hover {
+				background-color: #f2f2f2;
+			}
+			td {
+				padding-top: 1.25em;
+			}
+			md-sidenav, md-backdrop {
+				position: fixed;
+			}
+			*:focus {
+				outline: 0;
+				outline: none;
+			}
+		</style>
+		
+    </head>
+	<body ng-app="myApp" style="background-color:white; overflow-x: hidden;"> <!-- overflow-x: hidden is so that scroll bar does not overflow-->
+		<!-- View One -->
+		<script type="text/ng-template" id="/view1.tpl">
+		
+		<md-sidenav style="position: fixed" md-component-id="left" class="md-sidenav-left md-whiteframe-4dp">
+			<!-- Side Nav Content -->
+			Left Nav!
+		</md-sidenav>
+		
+		<div style="overflow: hidden; background-color: #42A5F5; min-height:100px;">
+		 <md-button ng-click="openLeftMenu()" class="md-fab md-mini md-hue-2" aria-label="Profile" style="float:left;">
+			<md-tooltip md-direction="bottom" md-visible>Side Nav</md-tooltip>
+			<img class="png-icon" src="Shatter.png" style="width: 24px; height: 24px;">
+			 
+		 </md-button>
+		 
+			<md-input-container>
+				<label>Search by</label>
+				<md-select ng-model="queryBy" ng-click="query=''">
+					<md-option value="$">everything</md-option>
+					<md-option value="id">id</md-option>
+					<md-option value="client">client</md-option>
+					<md-option value="active">active</md-option>
+					<md-option value="username">username</md-option>
+					<md-option value="accesscard">accesscard</md-option>
+					<md-option value="accessdoors">accessdoors</md-option>
+					<md-option value="firstname">firstname</md-option>
+					<md-option value="lastname">lastname</md-option>
+					<md-option value="email">email</md-option>
+				</md-select>
+		    </md-input-container>
+
+			
+			<form style="float: left">
+			  <md-input-container>
+				<label>Search</label>
+				<input ng-model="query[queryBy]">
+			  </md-input-container>
+			</form>
+			
+			<md-input-container> <!--onclick="setTimeout(determineWidth, 100);" is for the scroll bar resize-->
+			  <md-select ng-model="someModel" placeholder="Columns">
+				<md-button onclick="setTimeout(determineWidth, 100);" ng-click="showAll()">Show All</md-button>
+				<md-button style="bottom: 10px" onclick="setTimeout(determineWidth, 100);" ng-click="showDefault()">Show Default</md-button>
+				<div style="margin: 0cm 0cm 0cm .5cm;">
+				<md-checkbox onclick="setTimeout(determineWidth, 100);" ng-model="state[0]">Show ID</md-checkbox><br>
+				<md-checkbox onclick="setTimeout(determineWidth, 100);" ng-model="state[1]">Show Client</md-checkbox><br>
+				<md-checkbox onclick="setTimeout(determineWidth, 100);" ng-model="state[2]">Show Active</md-checkbox><br>
+				<md-checkbox onclick="setTimeout(determineWidth, 100);" ng-model="state[3]">Show Username</md-checkbox><br>
+				<md-checkbox onclick="setTimeout(determineWidth, 100);" ng-model="state[4]">Show Accesscard</md-checkbox><br>
+				<md-checkbox onclick="setTimeout(determineWidth, 100);" ng-model="state[5]">Show Access doors</md-checkbox><br>
+				<md-checkbox onclick="setTimeout(determineWidth, 100);" ng-model="state[6]">Show Firstname</md-checkbox><br>
+				<md-checkbox onclick="setTimeout(determineWidth, 100);" ng-model="state[7]">Show Lastname</md-checkbox><br>
+				<md-checkbox onclick="setTimeout(determineWidth, 100);" ng-model="state[8]">Show Email</md-checkbox><br>
+				<md-checkbox onclick="setTimeout(determineWidth, 100);" ng-model="state[9]">Show Picture</md-checkbox>
+				</div>
+			  </md-select>
+			</md-input-container>
+			<!--
+			<button ng-click="checkVar()">Check</button>
+			<button ng-click="dWidth()">Change Width</button>
+			-->
+			
+			<!-- Table Attempt -->
+			</div>
+			<br>
+			<!--
+			<md-content layout-padding>
+			<div layout="row" style="clear:both; padding:10px;">
+				
+				<div ng-click="changeOrder('id',0)" ng-show="state[0]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+				<span style="cursor:pointer">ID{[{arrows[0]}]}</span>
+				</div>
+				
+				<div ng-click="changeOrder('client',1)" ng-show="state[1]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+				<span style="cursor:pointer">Client{[{arrows[1]}]}</span>
+				</div>
+				
+				<div ng-click="changeOrder('active',2)" ng-show="state[2]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+				<span style="cursor:pointer">Active{[{arrows[2]}]}</span>
+				</div>
+				
+				<div ng-click="changeOrder('username',3)" ng-show="state[3]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+				<span style="cursor:pointer">Username{[{arrows[3]}]}</span>
+				</div>
+				
+				<div ng-click="changeOrder('accesscard',4)" ng-show="state[4]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+				<span style="cursor:pointer">Accesscard{[{arrows[4]}]}</span>
+				</div>
+				
+				<div ng-click="changeOrder('accessdoors',5)" ng-show="state[5]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+				<span style="cursor:pointer">Access doors{[{arrows[5]}]}</span>
+				</div>
+				
+				<div ng-click="changeOrder('firstname',6)" ng-show="state[6]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+				<span style="cursor:pointer">Firstname{[{arrows[6]}]}</span>
+				</div>
+				
+				<div ng-click="changeOrder('lastname',7)" ng-show="state[7]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+				<span style="cursor:pointer">Lastname{[{arrows[7]}]}</span>
+				</div>
+				
+				<div ng-click="changeOrder('email',8)" ng-show="state[8]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+				<span style="cursor:pointer">Email{[{arrows[8]}]}</span>
+				</div>
+				
+			</div>
+			<md-divider></md-divider>
+			<div style="padding:10px;" ng-repeat="person in clients | filter: query | orderBy: order | emptyToEnd: order" class="glyph" layout="column">
+				<div layout="row">
+					<div ng-show="state[0]" style="width: 350px; overflow: hidden; min-width:100px;">
+						{[{person.id}]}
+					</div>
+					
+					<div ng-show="state[1]" style="width: 350px; overflow: hidden; min-width:100px;">
+						{[{person.client}]}
+					</div>
+					
+					<div ng-show="state[2]" style="width: 350px; overflow: hidden; min-width:100px;">
+						{[{person.active}]}
+					</div>
+					
+					<div ng-show="state[3]" style="font-weight: 700; width: 350px; overflow: hidden; min-width:100px; text-overflow: ellipsis;">
+						<a href="#/view2link/{[{person.username}]}"><span style="color: black;">{[{person.username}]}</span></a>
+					</div>
+					
+					<div ng-show="state[4]" style="width: 350px; overflow: hidden; min-width:100px; text-overflow: ellipsis;">
+						{[{person.accesscard}]}
+					</div>
+					
+					<div ng-show="state[5]" style="width: 350px; overflow: hidden; min-width:100px; text-overflow: ellipsis;">
+						{[{person.accessdoors}]}
+					</div>
+					
+					<div ng-show="state[6]" style="width: 350px; overflow: hidden; min-width:100px;">
+						{[{person.firstname}]}
+					</div>
+					
+					<div ng-show="state[7]" style="width: 350px; overflow: hidden; min-width:100px;">
+						{[{person.lastname}]}
+					</div>
+					
+					<div ng-show="state[8]" style="width: 350px; overflow: hidden; min-width:100px; text-overflow: ellipsis;">
+						{[{person.email}]}
+					</div>
+					
+				</div>
+				<md-divider></md-divider>
+			</div>
+			</md-content>
+			-->
+			<div id="scroller" style="position:relative; bottom:18px; margin-left:0px; background-color:rgb(130,130,130); width:0px; height:3px;"></div><!--Custom Scroll Bar div-->
+			<md-content onscroll="scrollEvent()" id="cont" style="margin-left: 5px; margin-right: 5px;">
+				<table style="margin-bottom: 15px">
+					<tr style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; -o-user-select: none; user-select: none;">
+						<div layout="row">
+							<td ng-click="changeOrder('id',0)" ng-show="state[0]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+								<span style="cursor:pointer">ID{[{arrows[0]}]}</span>
+							</td>
+							
+							<td ng-click="changeOrder('client',1)" ng-show="state[1]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+								<span style="cursor:pointer">Client{[{arrows[1]}]}</span>
+							</td>
+							
+							<td ng-click="changeOrder('active',2)" ng-show="state[2]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+								<span style="cursor:pointer">Active{[{arrows[2]}]}</span>
+							</td>
+							
+							<td ng-click="changeOrder('username',3)" ng-show="state[3]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+								<span style="cursor:pointer">Username{[{arrows[3]}]}</span>
+							</td>
+							
+							<td ng-click="changeOrder('accesscard',4)" ng-show="state[4]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+								<span style="cursor:pointer">Accesscard{[{arrows[4]}]}</span>
+							</td>
+							
+							<td ng-click="changeOrder('accessdoors',5)" ng-show="state[5]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+								<span style="cursor:pointer">Access doors{[{arrows[5]}]}</span>
+							</td>
+							
+							<td ng-click="changeOrder('firstname',6)" ng-show="state[6]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+								<span style="cursor:pointer">Firstname{[{arrows[6]}]}</span>
+							</td>
+							
+							<td ng-click="changeOrder('lastname',7)" ng-show="state[7]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+								<span style="cursor:pointer">Lastname{[{arrows[7]}]}</span>
+							</td>
+							
+							<td ng-click="changeOrder('email',8)" ng-show="state[8]" style="color: rgb(130,130,130); width: 350px; min-width:100px;">
+								<span style="cursor:pointer">Email{[{arrows[8]}]}</span>
+							</td>
+						</div>
+					</tr>
+
+					<tr class="hoverable" style="padding:10px;" ng-repeat="person in clients | filter: query | orderBy: order | emptyToEnd: order" class="glyph">
+						<div kat="row">
+							<td ng-show="state[0]" style="width: 350px; overflow: hidden; min-width:100px;">
+								{[{person.id}]}
+							</td>
+							
+							<td ng-show="state[1]" style="width: 350px; overflow: hidden; min-width:100px;">
+								{[{person.client}]}
+							</td>
+							
+							<td ng-show="state[2]" style="width: 350px; overflow: hidden; min-width:100px;">
+								{[{person.active}]}
+							</td>
+							
+							<td ng-show="state[3]" style="font-weight: 700; width: 350px; overflow: hidden; min-width:100px; text-overflow: ellipsis;">
+								<a style="text-decoration:none;" href="#/view2link/{[{person.username}]}"><span style="color: black;">{[{person.username}]}</span></a>
+							</td>
+							
+							<td ng-show="state[4]" style="width: 350px; overflow: hidden; min-width:100px; text-overflow: ellipsis;">
+								{[{person.accesscard}]}
+							</td>
+							
+							<td ng-show="state[5]" style="width: 350px; overflow: hidden; min-width:100px; text-overflow: ellipsis;">
+								{[{person.accessdoors}]}
+							</td>
+							
+							<td ng-show="state[6]" style="width: 350px; overflow: hidden; min-width:100px;">
+								{[{person.firstname}]}
+							</td>
+							
+							<td ng-show="state[7]" style="width: 350px; overflow: hidden; min-width:100px;">
+								{[{person.lastname}]}
+							</td>
+							
+							<td ng-show="state[8]" style="width: 350px; overflow: hidden; min-width:100px; text-overflow: ellipsis;">
+								{[{person.email}]}
+							</td>
+						</div>
+						
+					</tr>
+				</table>
+			</md-content>
+			
+			
+			
+			<!--Original Table 
+			
+			<table style="clear:both" data-role="table" id="table-column-toggle" data-mode="columntoggle" 
+				class="ui-body-d ui-shadow ui-responsive table-stripe " data-column-btn-theme="a" 
+				data-column-btn-text="Columns to display..." data-column-popup-theme="a">
+				<thead class="ui-bar-a">
+					<tr>
+						<th ng-show="state[0]" data-priority="1"><abbr title="ID" class="opt" ng-style="{'color': boldArray[0]}" ng-click="changeOrder('id',0)" style="cursor:pointer">ID{[{arrows[0]}]}</abbr></th>
+						<th ng-show="state[1]" data-priority="2"><abbr title="Client" class="opt" ng-style="{'color': boldArray[1]}" ng-click="changeOrder('client',1)" style="cursor:pointer">Client{[{arrows[1]}]}</abbr></th>
+						<th ng-show="state[2]" data-priority="3"><abbr title="Active" class="opt" ng-style="{'color': boldArray[2]}" ng-click="changeOrder('active',2)" style="cursor:pointer">Active{[{arrows[2]}]}</abbr></th>
+						<th ng-show="state[3]" data-priority="4"><abbr title="Username" class="opt" ng-style="{'color': boldArray[3]}" ng-click="changeOrder('username',3)" style="cursor:pointer">Username{[{arrows[3]}]}</abbr></th>
+						<th ng-show="state[4]" data-priority="5"><abbr title="Accesscard" class="opt" ng-style="{'color': boldArray[4]}" ng-click="changeOrder('accesscard',4)" style="cursor:pointer">Accesscard{[{arrows[4]}]}</abbr></th>
+						<th ng-show="state[5]" data-priority="6"><abbr title="Access doors" class="opt" ng-style="{'color': boldArray[5]}" ng-click="changeOrder('accessdoors',5)" style="cursor:pointer">Access doors{[{arrows[5]}]}</abbr></th>
+						<th ng-show="state[6]" data-priority="7"><abbr title="Firstname" class="opt" ng-style="{'color': boldArray[6]}" ng-click="changeOrder('firstname',6)" style="cursor:pointer">Firstname{[{arrows[6]}]}</abbr></th>
+						<th ng-show="state[7]" data-priority="8"><abbr title="Lastname" class="opt" ng-style="{'color': boldArray[7]}" ng-click="changeOrder('lastname',7)" style="cursor:pointer">Lastname{[{arrows[7]}]}</abbr></th>
+						<th ng-show="state[8]" data-priority="9"><abbr title="Email" class="opt" ng-style="{'color': boldArray[8]}" ng-click="changeOrder('email',8)" style="cursor:pointer">Email{[{arrows[8]}]}</abbr></th>
+						<th ng-show="state[9]" data-priority="10"><abbr title="Picture" class="opt" ng-style="{'color': boldArray[9]}" ng-click="changeOrder('picture',9)" style="cursor:pointer">Picture{[{arrows[9]}]}</abbr></th>
+					</tr>
+				</thead>
+				<tbody ng-repeat="person in clients | filter: query | orderBy: order | emptyToEnd: order">
+					
+					<tr class="rows">
+						<th ng-show="state[0]">{[{person.id}]}</th>
+						<td ng-show="state[1]">{[{person.client}]}</td>
+						<td ng-show="state[2]">{[{person.active}]}</td>
+						<td ng-show="state[3]"><a href="#/view2link/{[{person.username}]}"><div style="color:#4d79ff;text-decoration:none;">{[{person.username}]}</div></a></td>
+						<td ng-show="state[4]">{[{person.accesscard}]}</td>
+						<td ng-show="state[5]">{[{person.accessdoors}]}</td>
+						<td ng-show="state[6]">{[{person.firstname}]}</td>
+						<td ng-show="state[7]">{[{person.lastname}]}</td>
+						<td ng-show="state[8]">{[{person.email}]}</td>
+						<!--<td></td>
+						<td ng-show="state[9]">
+							<ul>
+								<li>
+									<a href="/app_dev.php/user/17/show">show</a>
+								</li>
+								<li>
+									<a href="/app_dev.php/user/17/edit">edit</a>
+								</li>
+							</ul>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			-->
+			
+		</script>
+		<!-- View 2 -->
+		<script type="text/ng-template" id="/view2.tpl">
+			<div>
+				Username: {[{user.username}]} <br>
+				Client: {[{user.client}]} <br>
+				ID: {[{user.id}]} <br>
+				First Name: {[{user.firstname}]} <br>
+				Last Name: {[{user.lastname}]} <br>
+				Email: {[{user.email}]} <br>
+				Accesscard: {[{user.accesscard}]} <br>
+				Access Doors: {[{user.accessdoors}]} <br>
+				Active: {[{user.active}]} <br>
+				<a href="#/"><span style="color: black; font-weight: bold;">Go Back</span></a>				
+			</div>
+		</script>
+		
+		<div ng-view></div>
+		
+	</body>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+	<script src="https://code.angularjs.org/1.2.28/angular-route.min.js"></script>
+	<script src="../scripts/controllers/userListController.js"></script>
+</html>
