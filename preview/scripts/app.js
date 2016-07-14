@@ -59,9 +59,9 @@ angular.module("sbAdminApp", ["oc.lazyLoad", "ui.router", "ui.bootstrap", "angul
     }).state("dashboard.table", {
         templateUrl: "views/table.html",
         url: "/table"
-    }).state('dashboard.userList', {
-		  templateUrl:'views/userList.html',
-		  url: '/userList'
+    }).state("dashboard.userList", {
+		  templateUrl:"views/userList.html",
+		  url: "/userList"
 	  }).state("dashboard.panels-wells", {
         templateUrl: "views/ui-elements/panels-wells.html",
         url: "/panels-wells"
